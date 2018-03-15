@@ -20,7 +20,7 @@ function filter(candidates, filters) {
   let filteredCandidates = [];
   let candidatesLength = candidates.length;
   let filterLength = filters.length;
-  let hasOptions;
+  let profile;
   let availableImmediately = false;
   let freshGrad = false;
 
@@ -32,33 +32,33 @@ function filter(candidates, filters) {
     }
 
     for (let i = candidatesLength; i--; ) {
-      hasOptions = candidates[i].options && candidates[i].options.length > 0; //has.options
+      profile = candidates[i].profiles && candidates[i].profiles.length > 0; //has.profiles
 
-      if (candidates[i].options) {
+      if (candidates[i].profiles) {
         for (let k = filterLength; k--; ) {
           // loop through filters
           let hasFilter = false;
-          for (let j = candidates[i].options.length; j--; ) {
+          for (let j = candidates[i].profiles.length; j--; ) {
             if (!availableImmediately && !freshGrad) {
-              if (filters[k] == candidates[i].options[j].code) {
+              if (filters[k] == candidates[i].profiles[j].code) {
                 hasFilter = true;
               }
             } else if (
               availableImmediately &&
-              candidates[i].options[j].code === 'AVAILABLE_IMMEDIATELY'
+              candidates[i].profiles[j].code === 'AVAILABLE_IMMEDIATELY'
             ) {
               hasFilter = true;
             } else if (
               freshGrad &&
-              candidates[i].options[j].code === 'FRESH_GRAD'
+              candidates[i].profiles[j].code === 'FRESH_GRAD'
             ) {
               hasFilter = true;
             }
           }
-          hasOptions = hasOptions && hasFilter;
+          profile = profile && hasFilter;
         }
       }
-      if (hasOptions) {
+      if (profile) {
         filteredCandidates.unshift(candidates[i]);
       }
     }

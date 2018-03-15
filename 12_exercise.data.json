@@ -1,7 +1,7 @@
 [
   {
     "name": "Julian Assange",
-    "options": [
+    "profiles": [
       {
         "code": "AVAILABLE_IMMEDIATELY"
       },
@@ -27,7 +27,7 @@
   },
   {
     "name": "Kelly Diamond",
-    "options": [
+    "profiles": [
       {
         "code": "FRESH_GRAD"
       },
@@ -41,7 +41,7 @@
   },
   {
     "name": "Marc Brown",
-    "options": [
+    "profiles": [
       {
         "code": "AVAILABLE_IMMEDIATELY"
       },
@@ -55,7 +55,7 @@
   },
   {
     "name": "Donald Obama",
-    "options": [
+    "profiles": [
       {
         "code": "SENIOR"
       },
@@ -69,7 +69,7 @@
   },
   {
     "name": "Maria Bianchi",
-    "options": [
+    "profiles": [
       {
         "code": "AVAILABLE_IMMEDIATELY"
       },
@@ -89,7 +89,7 @@
   },
   {
     "name": "Jordi Boggiano",
-    "options": [
+    "profiles": [
       {
         "code": "SENIOR"
       },
@@ -103,7 +103,7 @@
   },
   {
     "name": "Winnie the Pooh",
-    "options": [
+    "profiles": [
       {
         "code": "FRESH_GRAD"
       },
@@ -114,6 +114,6 @@
   },
   {
     "name": "Franz",
-    "options": []
+    "profiles": []
   }
 ]
