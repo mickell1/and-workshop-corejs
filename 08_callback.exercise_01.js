@@ -3,14 +3,20 @@
 const fs = require('fs');
 
 const file = './todo.txt';
-fs.readFile(file, 'utf8', function(err, todoList) {
+
+const addTodo = function(err, todoList) {
   if (err) return console.log(err);
 
   todoList = todoList + '\n watch GOT';
-  fs.writeFile(file, todoList, function(err) {
-    if (err) return console.log(err);
-    console.log('todo added!');
-  });
-});
+  fs.writeFile(file, todoList, getTodo);
+};
 
-//## 02 create a 08_callback.exercise_01.test.js file and... test :)
+const getTodo = function(err) {
+  if (err) return console.log(err);
+  console.log('todo added!');
+}
+
+fs.readFile(file, 'utf8', addTodo)
+
+
+module.exports = addTodo
