@@ -24,47 +24,47 @@ function filter(candidates, filters) {
   let availableImmediately = false;
   let freshGrad = false;
 
-  if (filterLength !== 0) {
-    if (filters.indexOf('AVAILABLE_IMMEDIATELY') !== -1) {
-      availableImmediately = true;
-    } else if (filters.indexOf('FRESH_GRAD') !== -1) {
-      freshGrad = true;
-    }
+  if (filterLength === 0) {
+    return candidates;
+  }
+  if (filters.indexOf("AVAILABLE_IMMEDIATELY") !== -1) {
+    availableImmediately = true;
+  } else if (filters.indexOf("FRESH_GRAD") !== -1) {
+    freshGrad = true;
+  }
 
-    for (let i = candidatesLength; i--; ) {
-      profile = candidates[i].profiles && candidates[i].profiles.length > 0; //has.profiles
+  for (let i = candidatesLength; i--; ) {
+    profile = candidates[i].profiles && candidates[i].profiles.length > 0; //has.profiles
 
-      if (candidates[i].profiles) {
-        for (let k = filterLength; k--; ) {
-          // loop through filters
-          let hasFilter = false;
-          for (let j = candidates[i].profiles.length; j--; ) {
-            if (!availableImmediately && !freshGrad) {
-              if (filters[k] == candidates[i].profiles[j].code) {
-                hasFilter = true;
-              }
-            } else if (
-              availableImmediately &&
-              candidates[i].profiles[j].code === 'AVAILABLE_IMMEDIATELY'
-            ) {
-              hasFilter = true;
-            } else if (
-              freshGrad &&
-              candidates[i].profiles[j].code === 'FRESH_GRAD'
-            ) {
+    if (candidates[i].profiles) {
+      for (let k = filterLength; k--; ) {
+        // loop through filters
+        let hasFilter = false;
+        for (let j = candidates[i].profiles.length; j--; ) {
+          if (!availableImmediately && !freshGrad) {
+            if (filters[k] == candidates[i].profiles[j].code) {
               hasFilter = true;
             }
+          } else if (
+            availableImmediately &&
+            candidates[i].profiles[j].code === "AVAILABLE_IMMEDIATELY"
+          ) {
+            hasFilter = true;
+          } else if (
+            freshGrad &&
+            candidates[i].profiles[j].code === "FRESH_GRAD"
+          ) {
+            hasFilter = true;
           }
-          profile = profile && hasFilter;
         }
-      }
-      if (profile) {
-        filteredCandidates.unshift(candidates[i]);
+        profile = profile && hasFilter;
       }
     }
-  } else {
-    filteredCandidates = candidates;
+    if (profile) {
+      filteredCandidates.unshift(candidates[i]);
+    }
   }
+
   return filteredCandidates;
 }
 
