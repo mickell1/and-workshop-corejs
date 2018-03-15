@@ -18,13 +18,13 @@
 
 function filter(candidates, filters) {
   let filteredCandidates = [];
-  let candidatesLength = candidates.length;
-  let filterLength = filters.length;
+
+
   let profile;
   let availableImmediately = false;
   let freshGrad = false;
 
-  if (filterLength === 0) {
+  if (filters.length === 0) {
     return candidates;
   }
   if (filters.indexOf("AVAILABLE_IMMEDIATELY") !== -1) {
@@ -33,11 +33,11 @@ function filter(candidates, filters) {
     freshGrad = true;
   }
 
-  for (let i = candidatesLength; i--; ) {
+  for (let i = candidates.length; i--; ) {
     profile = candidates[i].profiles && candidates[i].profiles.length > 0; //has.profiles
 
     if (candidates[i].profiles) {
-      for (let k = filterLength; k--; ) {
+      for (let k = filters.length; k--; ) {
         // loop through filters
         let hasFilter = false;
         for (let j = candidates[i].profiles.length; j--; ) {
@@ -64,7 +64,6 @@ function filter(candidates, filters) {
       filteredCandidates.unshift(candidates[i]);
     }
   }
-
   return filteredCandidates;
 }
 
