@@ -18,19 +18,12 @@
 
 function filter(candidates, filters) {
   let filteredCandidates = [];
-
-
   let profile;
-  let availableImmediately = false;
-  let freshGrad = false;
+  let availableImmediatelyFilter = filters.includes("AVAILABLE_IMMEDIATELY");
+  let freshGradFilter = !availableImmediatelyFilter && filters.includes("FRESH_GRAD");
 
   if (filters.length === 0) {
     return candidates;
-  }
-  if (filters.indexOf("AVAILABLE_IMMEDIATELY") !== -1) {
-    availableImmediately = true;
-  } else if (filters.indexOf("FRESH_GRAD") !== -1) {
-    freshGrad = true;
   }
 
   for (let i = candidates.length; i--; ) {
@@ -41,17 +34,17 @@ function filter(candidates, filters) {
         // loop through filters
         let hasFilter = false;
         for (let j = candidates[i].profiles.length; j--; ) {
-          if (!availableImmediately && !freshGrad) {
+          if (!availableImmediatelyFilter && !freshGradFilter) {
             if (filters[k] == candidates[i].profiles[j].code) {
               hasFilter = true;
             }
           } else if (
-            availableImmediately &&
+            availableImmediatelyFilter &&
             candidates[i].profiles[j].code === "AVAILABLE_IMMEDIATELY"
           ) {
             hasFilter = true;
           } else if (
-            freshGrad &&
+            freshGradFilter &&
             candidates[i].profiles[j].code === "FRESH_GRAD"
           ) {
             hasFilter = true;
