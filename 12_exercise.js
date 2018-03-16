@@ -17,7 +17,7 @@
  */
 
 function filter(candidates, filters = []) {
-  // let filteredCandidates = [];
+  let filteredCandidates = [];
   let candidatesLength = candidates.length;
   let filterLength = filters.length;
   let profile;
@@ -31,53 +31,63 @@ function filter(candidates, filters = []) {
 
   const checkCandidate = (profiles = [], filter) => profiles.some(profiles => filter.includes(profiles.code));
 
-  return candidates.filter(({profiles = []}) => {
-    if(availableImmediatelyFilter) {
-      return checkCandidate(profiles, 'AVAILABLE_IMMEDIATELY');
+    for (let i = candidatesLength; i--; ) {
+      profile = candidates[i].profiles && candidates[i].profiles.length > 0; //has.profiles
+
+      if (candidates[i].profiles) {
+        for (let k = filterLength; k--; ) {
+          // loop through filters
+          let hasFilter = false;
+          for (let j = candidates[i].profiles.length; j--; ) {
+            if (!availableImmediatelyFilter && !freshGradFilter) {
+              if (filters[k] == candidates[i].profiles[j].code) {
+                hasFilter = true;
+              }
+            }
+            else if (availableImmediatelyFilter)
+            {
+              hasFilter = checkCandidate(candidates[i].profiles, 'AVAILABLE_IMMEDIATELY');
+            }
+            else if (freshGradFilter)
+            {
+
+              hasFilter = checkCandidate(candidates[i].profiles, 'FRESH_GRAD')
+            }
+          }
+          profile = profile && hasFilter;
+        }
+      }
+      if (profile) {
+        filteredCandidates.unshift(candidates[i]);
+      }
     }
-
-    if(freshGradFilter) {
-      return checkCandidate(profiles, 'FRESH_GRAD');
-    }
-
-    return profiles;
-  })
-
-  filters.some(candidates => candidates)
-
-
-    // for (let i = candidatesLength; i--; ) {
-    //   profile = candidates[i].profiles && candidates[i].profiles.length > 0; //has.profiles
-    //
-    //   if (candidates[i].profiles) {
-    //     for (let k = filterLength; k--; ) {
-    //       // loop through filters
-    //       let hasFilter = false;
-    //       for (let j = candidates[i].profiles.length; j--; ) {
-    //         if (!availableImmediatelyFilter && !freshGradFilter) {
-    //           if (filters[k] == candidates[i].profiles[j].code) {
-    //             hasFilter = true;
-    //           }
-    //         } else if (
-    //           availableImmediatelyFilter &&
-    //           candidates[i].profiles[j].code === 'AVAILABLE_IMMEDIATELY'
-    //         ) {
-    //           hasFilter = true;
-    //         } else if (
-    //           freshGradFilter &&
-    //           candidates[i].profiles[j].code === 'FRESH_GRAD'
-    //         ) {
-    //           hasFilter = true;
-    //         }
-    //       }
-    //       profile = profile && hasFilter;
-    //     }
-    //   }
-    //   if (profile) {
-    //     filteredCandidates.unshift(candidates[i]);
-    //   }
-    // }
   return filteredCandidates;
 }
 
 module.exports = filter;
+
+// function filter(candidates, filters = []) {
+//
+//   if (!filters.length ) {
+//     return candidates
+//   }
+//
+//   availableImmediatelyFilter = filters.includes('AVAILABLE_IMMEDIATELY');
+//   freshGradFilter = !availableImmediatelyFilter && filters.includes('FRESH_GRAD');
+//
+//   const checkCandidate = (profiles = [], filter) => profiles.some(profiles => filter.includes(profiles.code));
+//
+//   return candidates.filter((profile) => {
+//     if(availableImmediatelyFilter) {
+//       return checkCandidate(profile, 'AVAILABLE_IMMEDIATELY');
+//     }
+//
+//     if(freshGradFilter) {
+//       return checkCandidate(profile, 'FRESH_GRAD');
+//     }
+//
+//     return profiles;
+//   })
+//
+//   return filters.every(candidate => checkCandidate(profiles, candidate));
+// }
