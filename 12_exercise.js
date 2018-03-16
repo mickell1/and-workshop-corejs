@@ -16,59 +16,13 @@
  *   happy refactory :)
  */
 
-function filter(candidates, filters = []) {
-  let filteredCandidates = [];
-  let candidatesLength = candidates.length;
-  let filterLength = filters.length;
-  let profile;
-
-  if (!filterLength ) {
-    return candidates
-  }
-
-  availableImmediatelyFilter = filters.includes('AVAILABLE_IMMEDIATELY');
-  freshGradFilter = !availableImmediatelyFilter && filters.includes('FRESH_GRAD');
-
-  const checkCandidate = (profiles = [], filter) => profiles.some(profiles => filter.includes(profiles.code));
-
-    for (let i = candidatesLength; i--; ) {
-      profile = candidates[i].profiles && candidates[i].profiles.length > 0; //has.profiles
-
-      if (candidates[i].profiles) {
-        for (let k = filterLength; k--; ) {
-          // loop through filters
-          let hasFilter = false;
-          for (let j = candidates[i].profiles.length; j--; ) {
-            if (!availableImmediatelyFilter && !freshGradFilter) {
-              if (filters[k] == candidates[i].profiles[j].code) {
-                hasFilter = true;
-              }
-            }
-            else if (availableImmediatelyFilter)
-            {
-              hasFilter = checkCandidate(candidates[i].profiles, 'AVAILABLE_IMMEDIATELY');
-            }
-            else if (freshGradFilter)
-            {
-
-              hasFilter = checkCandidate(candidates[i].profiles, 'FRESH_GRAD')
-            }
-          }
-          profile = profile && hasFilter;
-        }
-      }
-      if (profile) {
-        filteredCandidates.unshift(candidates[i]);
-      }
-    }
-  return filteredCandidates;
-}
-
-module.exports = filter;
-
 // function filter(candidates, filters = []) {
+//   let filteredCandidates = [];
+//   let candidatesLength = candidates.length;
+//   let filterLength = filters.length;
+//   let profile;
 //
-//   if (!filters.length ) {
+//   if (!filterLength ) {
 //     return candidates
 //   }
 //
@@ -77,17 +31,62 @@ module.exports = filter;
 //
 //   const checkCandidate = (profiles = [], filter) => profiles.some(profiles => filter.includes(profiles.code));
 //
-//   return candidates.filter((profile) => {
-//     if(availableImmediatelyFilter) {
-//       return checkCandidate(profile, 'AVAILABLE_IMMEDIATELY');
+//     for (let i = candidatesLength; i--; ) {
+//       profile = candidates[i].profiles && candidates[i].profiles.length > 0; //has.profiles
+//
+//       if (candidates[i].profiles) {
+//         for (let k = filterLength; k--; ) {
+//           // loop through filters
+//           let hasFilter = false;
+//           for (let j = candidates[i].profiles.length; j--; ) {
+//             if (!availableImmediatelyFilter && !freshGradFilter) {
+//               if (filters[k] == candidates[i].profiles[j].code) {
+//                 hasFilter = true;
+//               }
+//             }
+//             else if (availableImmediatelyFilter)
+//             {
+//               hasFilter = checkCandidate(candidates[i].profiles, 'AVAILABLE_IMMEDIATELY');
+//             }
+//             else if (freshGradFilter)
+//             {
+//
+//               hasFilter = checkCandidate(candidates[i].profiles, 'FRESH_GRAD')
+//             }
+//           }
+//           profile = profile && hasFilter;
+//         }
+//       }
+//       if (profile) {
+//         filteredCandidates.unshift(candidates[i]);
+//       }
 //     }
-//
-//     if(freshGradFilter) {
-//       return checkCandidate(profile, 'FRESH_GRAD');
-//     }
-//
-//     return profiles;
-//   })
-//
-//   return filters.every(candidate => checkCandidate(profiles, candidate));
+//   return filteredCandidates;
 // }
+
+// module.exports = filter;
+
+function filter(candidates, filters = []) {
+
+  if (!filters.length ) {
+    return candidates
+  }
+
+  availableImmediatelyFilter = filters.includes('AVAILABLE_IMMEDIATELY');
+  freshGradFilter = !availableImmediatelyFilter && filters.includes('FRESH_GRAD');
+
+  const checkCandidate = (candidate, filter) => candidate.profiles.some(profile => filter.includes(profile.code));
+
+  return candidates.filter(( candidate) => {
+    if (availableImmediatelyFilter) {
+      return checkCandidate(candidate, 'AVAILABLE_IMMEDIATELY');
+    }
+
+    if (freshGradFilter) {
+      return checkCandidate(candidate, 'FRESH_GRAD');
+    }
+    return filters.every(filter => checkCandidate(candidate, filter));
+  })
+}
+
+module.exports = filter;
